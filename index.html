@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Europa 2026 · Fernando & Lucía</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --orange: #C8651B;
+  --orange-l: #FDF3EA;
+  --orange-m: #E8934A;
+  --dark: #1A1208;
+  --gray: #4A4035;
+  --gray-l: #F5F2EE;
+  --gray-ll: #FAF8F5;
+  --blue: #1565C0;
+  --blue-l: #E8F4FD;
+  --green: #2E7D32;
+  --green-l: #E8F5E9;
+  --tip: #7A5500;
+  --tip-bg: #FFFBF0;
+  --voucher-bg: #FFF8F0;
+  --r: 12px;
+  --rs: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--gray-ll);
+  color: var(--dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+.hdr {
+  background: linear-gradient(135deg, #C8651B 0%, #A04A0E 100%);
+  color: #fff;
+  padding: 1.25rem 1rem 0;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 16px rgba(160,74,14,.35);
+}
+.hdr-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: .6rem; }
+.hdr-title { font-family: 'DM Serif Display', serif; font-size: 22px; letter-spacing: -.3px; line-height: 1.1; }
+.hdr-sub { font-size: 11px; opacity: .8; margin-top: 2px; }
+.hdr-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: .65rem; }
+.chip { background: rgba(255,255,255,.18); border-radius: 20px; padding: 2px 9px; font-size: 10px; font-weight: 500; }
+
+/* ── NAV TABS (main) ── */
+.main-tabs { display: flex; border-top: 1px solid rgba(255,255,255,.2); }
+.main-tab {
+  flex: 1; text-align: center; padding: .55rem .25rem;
+  font-size: 11px; font-weight: 500; color: rgba(255,255,255,.65);
+  cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all .2s;
+}
+.main-tab.active { color: #fff; border-bottom-color: #fff; }
+
+/* ── DAY NAV ── */
+.day-nav-wrap { background: #fff; border-bottom: 1px solid #EDE9E3; position: sticky; top: 130px; z-index: 90; }
+.day-nav { display: flex; gap: 4px; overflow-x: auto; padding: .5rem .75rem; scrollbar-width: none; }
+.day-nav::-webkit-scrollbar { display: none; }
+.day-btn {
+  flex-shrink: 0; border: 1px solid #DDD8D0; border-radius: var(--rs);
+  padding: 5px 9px; background: #fff; cursor: pointer; text-align: center; min-width: 46px;
+  transition: all .15s;
+}
+.day-btn.active { background: var(--orange); border-color: var(--orange); }
+.day-btn.today:not(.active) { border-color: var(--orange); }
+.day-btn.today:not(.active) .dnum { color: var(--orange); }
+.dnum { font-size: 12px; font-weight: 600; color: var(--dark); display: block; }
+.dday { font-size: 9px; color: #888; display: block; }
+.day-btn.active .dnum, .day-btn.active .dday { color: #fff; }
+
+/* ── MAIN CONTENT ── */
+.page { display: none; padding: .75rem .85rem 5rem; }
+.page.visible { display: block; }
+
+/* ── CARDS ── */
+.card {
+  background: #fff; border-radius: var(--r);
+  border: 1px solid #EDE9E3; margin-bottom: .65rem;
+  overflow: hidden;
+}
+.card-hdr {
+  background: linear-gradient(135deg, var(--orange) 0%, #A04A0E 100%);
+  padding: .7rem 1rem; display: flex; align-items: center; justify-content: space-between;
+}
+.card-hdr-title { font-size: 13px; font-weight: 600; color: #fff; }
+.card-hdr-sub { font-size: 10px; color: rgba(255,255,255,.8); }
+.card-body { padding: .85rem 1rem; }
+
+/* ── HOTEL ROW ── */
+.hotel-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  background: var(--gray-l); border-radius: var(--rs);
+  padding: 8px 10px; margin-bottom: .5rem;
+}
+.hotel-icon { font-size: 18px; flex-shrink: 0; padding-top: 1px; }
+.hotel-info { flex: 1; }
+.hotel-name { font-size: 12px; font-weight: 600; color: var(--dark); line-height: 1.3; }
+.hotel-code { font-size: 10px; color: #888; margin-top: 1px; }
+.hotel-bk { font-size: 10px; font-weight: 500; }
+.hotel-bk.yes { color: var(--green); }
+.hotel-bk.no { color: #888; }
+.btn-ticket {
+  background: var(--orange); color: #fff; border: none;
+  border-radius: 6px; padding: 4px 9px; font-size: 10px; font-weight: 600;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-ticket.blue { background: var(--blue); }
+.btn-ticket.green { background: var(--green); }
+.btn-ticket.dark { background: var(--dark); }
+
+/* ── TIMELINE ── */
+.sec-label {
+  font-size: 9px; font-weight: 700; color: var(--orange);
+  letter-spacing: .8px; text-transform: uppercase;
+  margin: .75rem 0 .35rem;
+}
+.tl { display: flex; flex-direction: column; }
+.ti { display: flex; gap: 8px; padding: 3px 0; align-items: flex-start; }
+.ti-time { font-size: 10px; color: var(--orange); font-weight: 600; min-width: 38px; padding-top: 2px; flex-shrink: 0; }
+.ti-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); margin-top: 5px; flex-shrink: 0; }
+.ti-text { font-size: 12px; color: var(--dark); line-height: 1.5; }
+.ti-sub { font-size: 10px; color: #888; display: block; margin-top: 1px; }
+.ti-sub a { color: var(--blue); text-decoration: none; }
+
+/* ── TRANSPORT ── */
+.tr-row {
+  background: var(--gray-l); border-radius: var(--rs);
+  padding: 7px 10px; margin: 3px 0; font-size: 11.5px;
+  color: var(--dark); line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 7px;
+}
+.tr-icon { flex-shrink: 0; font-size: 16px; padding-top: 1px; }
+
+/* ── NIGHTJET ── */
+.nightjet-row {
+  background: var(--blue-l); border-left: 3px solid var(--blue);
+  border-radius: 0 var(--rs) var(--rs) 0; padding: 8px 10px; margin-bottom: .5rem;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.nj-title { font-size: 12px; font-weight: 700; color: var(--blue); }
+.nj-sub { font-size: 10px; color: #555; margin-top: 1px; }
+
+/* ── VOUCHER ── */
+.voucher {
+  border: 1.5px dashed var(--orange); border-radius: var(--rs);
+  background: var(--voucher-bg); padding: 9px 11px; margin: .4rem 0;
+}
+.v-title { font-size: 12px; font-weight: 700; color: var(--orange); margin-bottom: 4px; }
+.v-body { font-size: 11px; color: var(--dark); line-height: 1.6; }
+.v-warn { font-size: 10.5px; color: #C00; font-weight: 600; margin-top: 4px; }
+
+/* ── APPS ── */
+.apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: .3rem 0; }
+.app-card { background: #F0F4FF; border-radius: var(--rs); padding: 7px 9px; }
+.app-name { font-size: 11.5px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
+.app-det { font-size: 10px; color: #666; line-height: 1.4; }
+.app-free { font-size: 10px; font-weight: 600; color: var(--green); margin-top: 3px; }
+.app-nofree { font-size: 10px; color: #888; margin-top: 3px; }
+
+/* ── TIPS ── */
+.tip-row {
+  background: var(--tip-bg); border-left: 2px solid #E8A030;
+  border-radius: 0 var(--rs) var(--rs) 0;
+  padding: 5px 9px; margin: 3px 0;
+  font-size: 11.5px; color: var(--tip); line-height: 1.5;
+}
+
+/* ── SECTION TABS ── */
+.stabs { display: flex; gap: 4px; margin: .5rem 0 .25rem; overflow-x: auto; scrollbar-width: none; }
+.stabs::-webkit-scrollbar { display: none; }
+.stab {
+  flex-shrink: 0; font-size: 10px; padding: 3px 9px;
+  border-radius: 20px; border: 1px solid #DDD8D0;
+  background: #fff; cursor: pointer; color: #888;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+}
+.stab.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+/* ── LINK BTN ── */
+.link-btn {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 10.5px; color: var(--blue); text-decoration: none;
+  background: var(--blue-l); border-radius: 5px; padding: 2px 7px;
+  margin: 2px 2px 2px 0;
+}
+
+/* ── NAV BTNS ── */
+.nav-btns { display: flex; gap: 8px; margin-top: .5rem; }
+.nav-btn {
+  flex: 1; font-size: 12px; padding: 8px;
+  border-radius: var(--rs); border: 1px solid #DDD8D0;
+  background: #fff; cursor: pointer; color: var(--dark);
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+}
+.nav-btn:disabled { opacity: .3; cursor: default; }
+
+/* ── TODAY BANNER ── */
+.today-banner {
+  background: var(--orange); color: #fff; border-radius: var(--rs);
+  padding: 5px 11px; margin-bottom: .5rem;
+  font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 5px;
+}
+
+/* ── TICKETS PAGE ── */
+.tickets-grid { display: flex; flex-direction: column; gap: .5rem; }
+.tkt-card {
+  background: #fff; border-radius: var(--r); border: 1px solid #EDE9E3;
+  overflow: hidden;
+}
+.tkt-hdr {
+  display: flex; align-items: center; gap: 10px;
+  padding: .65rem 1rem; border-bottom: 1px solid #EDE9E3;
+}
+.tkt-icon { font-size: 22px; flex-shrink: 0; }
+.tkt-title { font-size: 13px; font-weight: 600; color: var(--dark); }
+.tkt-date { font-size: 10px; color: #888; margin-top: 1px; }
+.tkt-body { padding: .7rem 1rem; }
+.tkt-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 3px 0; border-bottom: .5px solid #F0EDE8; }
+.tkt-row:last-child { border-bottom: none; }
+.tkt-key { font-size: 10px; color: #888; flex-shrink: 0; width: 90px; }
+.tkt-val { font-size: 11px; color: var(--dark); font-weight: 500; text-align: right; flex: 1; }
+.tkt-code {
+  background: var(--orange-l); border-radius: var(--rs);
+  padding: 6px 10px; margin-top: .5rem;
+  font-size: 12px; font-weight: 700; color: var(--orange);
+  letter-spacing: .5px; text-align: center;
+}
+.tkt-warn {
+  background: #FFF3CD; border-radius: var(--rs); padding: 6px 10px;
+  margin-top: .4rem; font-size: 10.5px; color: #856404; line-height: 1.5;
+}
+.badge {
+  display: inline-block; padding: 1px 7px; border-radius: 10px;
+  font-size: 9px; font-weight: 700; letter-spacing: .3px;
+}
+.badge-hotel { background: #E3F2FD; color: #1565C0; }
+.badge-train { background: #E8F5E9; color: #2E7D32; }
+.badge-flight { background: #EDE7F6; color: #512DA8; }
+.badge-voucher { background: var(--orange-l); color: var(--orange); }
+.badge-car { background: #FFF3E0; color: #E65100; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6);
+  z-index: 999; align-items: flex-end;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff; border-radius: var(--r) var(--r) 0 0;
+  width: 100%; max-height: 85vh; overflow-y: auto;
+  animation: slideUp .25s ease-out;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-hdr {
+  background: linear-gradient(135deg, var(--orange) 0%, #A04A0E 100%);
+  padding: .85rem 1rem; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0;
+}
+.modal-title { font-size: 14px; font-weight: 700; color: #fff; }
+.modal-close {
+  background: rgba(255,255,255,.25); border: none; color: #fff;
+  border-radius: 50%; width: 28px; height: 28px; font-size: 16px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+}
+.modal-body { padding: 1rem; }
+.modal-section { margin-bottom: 1rem; }
+.modal-section-title { font-size: 10px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: .8px; margin-bottom: .4rem; }
+.modal-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: .5px solid #F0EDE8; }
+.modal-row:last-child { border-bottom: none; }
+.modal-key { font-size: 11px; color: #888; }
+.modal-val { font-size: 11px; color: var(--dark); font-weight: 500; text-align: right; max-width: 60%; }
+.modal-code {
+  background: var(--orange-l); border-radius: var(--rs); padding: 8px 12px;
+  font-size: 13px; font-weight: 700; color: var(--orange); text-align: center;
+  letter-spacing: 1px; margin: .5rem 0;
+}
+.modal-warn {
+  background: #FFF3CD; border-left: 3px solid #F59E0B;
+  border-radius: 0 var(--rs) var(--rs) 0;
+  padding: 8px 10px; font-size: 11px; color: #856404;
+  line-height: 1.6; margin: .4rem 0;
+}
+.modal-info {
+  background: var(--blue-l); border-radius: var(--rs);
+  padding: 8px 10px; font-size: 11px; color: #1565C0;
+  line-height: 1.6; margin: .4rem 0;
+}
+
+/* ── SCROLL TOP ── */
+.fab {
+  position: fixed; bottom: 1.2rem; right: 1rem; z-index: 200;
+  background: var(--orange); color: #fff; border: none;
+  border-radius: 50%; width: 42px; height: 42px; font-size: 18px;
+  box-shadow: 0 4px 12px rgba(200,101,27,.4);
+  cursor: pointer; display: none; align-items: center; justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+}
+.fab.show { display: flex; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <div>
+      <div class="hdr-title">Europa 2026</div>
+      <div class="hdr-sub">18 mayo — 9 junio · Fernando & Lucía</div>
+    </div>
+    <div style="text-align:right;padding-top:2px">
+      <div style="font-size:10px;color:rgba(255,255,255,.7)">Levys Tours</div>
+    </div>
+  </div>
+  <div class="hdr-chips">
+    <span class="chip">✈ 4 vuelos</span>
+    <span class="chip">🏨 8 hoteles</span>
+    <span class="chip">🚂 2 trenes</span>
+    <span class="chip">🚗 9 días auto</span>
+    <span class="chip">🎫 3 tickets</span>
+  </div>
+  <div class="main-tabs">
+    <div class="main-tab active" onclick="showPage('itinerario',this)">Itinerario</div>
+    <div class="main-tab" onclick="showPage('tickets',this)">Tickets</div>
+    <div class="main-tab" onclick="showPage('vuelos',this)">Vuelos</div>
+    <div class="main-tab" onclick="showPage('info',this)">Info</div>
+  </div>
+</div>
+
+<!-- DAY NAV (only for itinerario) -->
+<div class="day-nav-wrap" id="dayNavWrap">
+  <div class="day-nav" id="dayNav"></div>
+</div>
+
+<!-- ITINERARIO PAGE -->
+<div class="page visible" id="page-itinerario">
+  <div id="todayBanner"></div>
+  <div id="dayContent"></div>
+</div>
+
+<!-- TICKETS PAGE -->
+<div class="page" id="page-tickets">
+  <div class="tickets-grid" id="ticketsGrid"></div>
+</div>
+
+<!-- VUELOS PAGE -->
+<div class="page" id="page-vuelos">
+  <div id="vuelosContent"></div>
+</div>
+
+<!-- INFO PAGE -->
+<div class="page" id="page-info">
+  <div id="infoContent"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hdr">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<button class="fab" id="fab" onclick="scrollToTop()">↑</button>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+
+const TICKETS = {
+  vuelo: {
+    icon:'✈', badge:'badge-flight', label:'Vuelo',
+    title:'Aerolíneas Argentinas — Ida y vuelta',
+    date:'18 mayo – 9 junio 2026',
+    data: {
+      'Pasajero 1':'Fernando Allena',
+      'Pasajero 2':'Lucía Forté',
+      'Código reserva':'OEVDZD',
+      'Boleto Fernando':'0442165761215',
+      'Boleto Lucía':'0442165761217',
+      'Equipaje':'1 pieza por tramo',
+      'Forma de pago':'Visa xxxxxx5731',
+    },
+    segments:[
+      {from:'Tucumán (TUC)',to:'Buenos Aires (EZE)',vuelo:'AR 1483',salida:'18/05 18:25',arribo:'18/05 20:15',terminal:'Domestic Arrivals'},
+      {from:'Buenos Aires (EZE)',to:'Madrid (MAD)',vuelo:'AR 1132',salida:'18/05 23:55',arribo:'19/05 17:10',terminal:'Departures T1'},
+      {from:'Madrid (MAD)',to:'Amsterdam (AMS)',vuelo:'AR 7814 (KLM)',salida:'19/05 20:30',arribo:'19/05 23:00',terminal:'T2 → AMS. Cód KLM: BNF938'},
+      {from:'Roma Fiumicino (FCO)',to:'Buenos Aires (EZE)',vuelo:'AR 1141',salida:'08/06 19:15',arribo:'09/06 04:40',terminal:'T3'},
+      {from:'Buenos Aires (EZE)',to:'Tucumán (TUC)',vuelo:'AR 1470',salida:'09/06 07:15',arribo:'09/06 09:15',terminal:'Departures'},
+    ],
+    warn:'Presentarse 3 hs antes en vuelos internacionales y 2 hs en domésticos. Llevar DNI vigente. 1 valija 23kg en bodega por persona.',
+  },
+  nightjet: {
+    icon:'🌙', badge:'badge-train', label:'Tren nocturno',
+    title:'Nightjet NJ 421 — Amsterdam → Munich',
+    date:'22 mayo 2026 · 18:52 hs',
+    data:{
+      'Pasajero':'Fernando Allena (2 adultos)',
+      'Ticketcode':'2985 5928 8555 4007',
+      'Buchung':'0382 3631 8044 3113',
+      'Tren / Vagón':'NJ 421 · Wagen 425',
+      'Clase':'2 · Mini Cabin · UNTEN 51/52',
+      'Incluye':'Frühstück (desayuno)',
+      'Precio':'EUR 259,80 (2 pax)',
+      'Cancelación':'Sin cambio ni devolución',
+    },
+    warn:'⚠ Llevar documento de identidad para el control. Imprimir en A4 blanco o mostrar en pantalla. Verificar hora de salida en oebb.at antes de viajar.',
+    info:'El tren nocturno incluye desayuno. Mini Cabin = camarote privado para 2. Los Alpes al amanecer.',
+  },
+  ecmunven: {
+    icon:'🚄', badge:'badge-train', label:'Tren',
+    title:'EC 81 — Munich → Venezia',
+    date:'25 mayo 2026 · 07:32 hs',
+    data:{
+      'Pasajero':'Fernando Allena (2 pax)',
+      'Ticketcode':'9K02B06F',
+      'N° Pedido':'216355756003',
+      'Reserva':'897207230218',
+      'Vagón / Asientos':'Wg. 263 · Pl. 11, 12 (Gang, Abteil)',
+      'Clase':'1ª clase',
+      'Ruta':'Munich Hbf → Venezia S.Lucia',
+      'Arribo':'25/05 15:14 hs',
+      'Precio':'EUR 245,78 (2 pax)',
+      'Cancelación':'Sin devolución (Super Sparpreis)',
+    },
+    warn:'⚠ Llevar documento de identidad. Sin posibilidad de cancelación ni cambio.',
+    info:'Ruta panorámica por Innsbruck, Brennero y los Alpes. Llevar snacks y agua para el viaje de 7:30 hs.',
+  },
+  auto: {
+    icon:'🚗', badge:'badge-car', label:'Auto',
+    title:'Budget Rent a Car — VW T-Cross (o similar)',
+    date:'27 mayo – 4 junio 2026 · 9 días',
+    data:{
+      'Cliente':'Fernando Allena',
+      'Booking':'45128768IT6',
+      'Retiro':'27/05/2026 9:00 AM · Venezia Mestre, Viale Stazione 8/C',
+      'Devolución':'04/06/2026 7:30 PM · Rome Termini, Via Marsala 53',
+      'Categoría':'IDAR · Automática',
+      'Modelo ref.':'VW T-Cross',
+      'KM':'Ilimitados',
+      'Seguro':'CDW + TP incluidos',
+      'Contacto':'info@carzrental.com · WA: +1 786 820 8222',
+    },
+    warn:'⚠ Documentos requeridos: Licencia de conducir + Tarjeta de crédito + Pasaporte + Permiso internacional de conducir. NO incluye nafta, peajes ni cargo por devolución en otra ciudad.',
+    info:'Roma: NO circular en auto dentro de la ciudad (ZTL = multas automáticas para turistas). Dejar el auto en Termini.',
+  },
+  rijksmuseum: {
+    icon:'🎨', badge:'badge-voucher', label:'Ticket museo',
+    title:'Rijksmuseum — E-Ticket (×2)',
+    date:'20 mayo 2026 · 14:00–15:00 hs',
+    data:{
+      'Nombre':'Fernando Allena',
+      'Tipo':'Entrada adulto × 2',
+      'Precio':'€25,00 c/u (€50 total)',
+      'Cód. ticket 1':'3289016507667',
+      'Cód. ticket 2':'3289016507668',
+      'Horario museo':'09:00–17:00 hs (365 días)',
+      'Tienda/Cafetería':'hasta 18:00 hs',
+    },
+    warn:'⚠ Escanear desde el celular al ingresar. Una vez adentro podés quedarte todo el tiempo que quieras. Sin efectivo: usar tarjeta en toda la tienda.',
+    info:'Descargá la app gratuita: www.rijksmuseum.nl/app para la visita multimedia.',
+  },
+  accademia: {
+    icon:'🗿', badge:'badge-voucher', label:'Voucher museo',
+    title:'Galería de la Academia — El David',
+    date:'3 junio 2026 · 09:15 hs',
+    data:{
+      'Voucher N°':'F640150',
+      'Booking':'20718919B',
+      'Nombre':'Fernando Allena',
+      'Tickets':'2 entradas completas',
+      'Dirección':'Via Ricasoli 58, Florencia',
+      'Operador':'Tuscanyall.com · (+39) 055.713.655',
+      'Cancelación':'Sin reembolso desde 3 días antes',
+    },
+    warn:'⚠ VOUCHERS DEBEN CANJEARSE POR ENTRADAS. Presentar en INGRESO RESERVADO — NO HACER FILA en la entrada principal. Llevar DNI. Llegar 15 min antes de las 09:15.',
+    info:'La reservación es válida SOLO en la fecha confirmada. Si hay huelga del personal no hay reembolso.',
+  },
+  vaticano: {
+    icon:'⛪', badge:'badge-voucher', label:'Voucher museo',
+    title:'Museos Vaticanos — Visita Guiada',
+    date:'6 junio 2026 · 08:30 hs',
+    data:{
+      'Visita N°':'28086/2026-10',
+      'Código':'2L2N0RT42JVMU3NUH',
+      'Participantes':'Fernando Allena + Lucía Forté',
+      'Pax':'2 personas',
+      'Idioma':'Español',
+      'Acceso':'Corridoio 2 / Passageway 2',
+      'Guía':'€27,00 (€13,50 × 2)',
+      'Auriculares':'€3,00 (€1,50 × 2)',
+      'Prevendita':'€10,00 (€5 × 2)',
+      'Entradas':'€40,00 (€20 × 2)',
+      'Total':'€80,00',
+    },
+    warn:'⚠ MOSTRAR VOUCHER 30 MIN ANTES al personal en el exterior (Viale Vaticano, lado derecho). Luego presentar en Sportello Visite Guidate para retirar tickets. Sin ticket no hay acceso. No se puede cambiar fecha ni cantidad.',
+    info:'Capilla Sixtina: normas estrictas de silencio. No se permiten fotos. El voucher es válido en formato digital (celular o tablet).',
+  },
+};
+
+const HOTELS = {
+  acostar: {
+    icon:'🏨', label:'Hotel Acostar',
+    title:'Hotel Acostar — Amsterdam',
+    data:{
+      'Check-in':'19/05/2026',
+      'Check-out':'22/05/2026',
+      'Código reserva':'IUTQMXIS',
+      'Confirmación RESTEL':'54434759-52295016',
+      'Tipo habitación':'2 camas individuales (económica)',
+      'Dirección':'Kerkstraat 45-49, Amsterdam',
+      'Estrellas':'2 ★★',
+      'Desayuno':'No incluido',
+      'Pasajeros':'Fernando Allena + Lucía Forté',
+      'Emergencias':'Levys Tours: +54 9 11 6700 2000',
+    },
+    warn:'⚠ City Tax de pago directo en el hotel: USD 72,22. Política no reembolsable. Llevar misma tarjeta usada en la reserva.',
+  },
+  elephant: {
+    icon:'🏨', label:'Creatif Hotel Elephant',
+    title:'Creatif Hotel Elephant — Munich',
+    data:{
+      'Check-in':'23/05/2026 (desde 15:00)',
+      'Check-out':'25/05/2026 (hasta 11:00)',
+      'Código reserva':'PBTOCEHF',
+      'Confirmación APITUDE':'202-8895848',
+      'Tipo habitación':'Double or Twin Standard',
+      'Dirección':'Laemmerstrasse 6, Munich',
+      'Estrellas':'3 ★★★',
+      'Desayuno':'No incluido',
+      'Pasajeros':'Fernando Allena + Lucía Forté',
+      'Emergencias':'Levys Tours: +54 9 11 6700 2000',
+    },
+    warn:'⚠ Cancelación con costo desde 22/05/2026 (USD 131,76). Llegar antes de las 06:00 o avisar al hotel.',
+  },
+  venecia: {
+    icon:'🏨', label:'Plaza Hotel Venice',
+    title:'Plaza Hotel Venice — Mestre',
+    data:{
+      'Check-in':'25/05/2026',
+      'Check-out':'27/05/2026',
+      'Código reserva':'FXQNEFNQ',
+      'Confirmación DOTW':'950309025',
+      'Tipo habitación':'Classic Double Bed · Breakfast incluido',
+      'Dirección':'Viale Stazione 36, Venice Mestre',
+      'Desayuno':'SÍ incluido',
+      'Pasajeros':'Fernando Allena + Lucía Forté',
+      'Emergencias':'Levys Tours: +54 9 11 6700 2000',
+    },
+    warn:'⚠ City Tax: USD 14,56 a pagar en el hotel. Cancelación gratuita hasta 23/05/2026 17:59. Después: USD 211,33. Acceso a Venecia: generar QR en cda.ve.it/en/',
+  },
+  ibismilano: {
+    icon:'🏨', label:'Ibis Milano Centro',
+    title:'Ibis Milano Centro — Milán',
+    data:{
+      'Check-in':'27/05/2026',
+      'Check-out':'30/05/2026',
+      'Código reserva':'IXCDCJWY',
+      'Confirmación DOTW':'950311415',
+      'Tipo habitación':'Standard Twin Beds · Breakfast incluido',
+      'Dirección':'Via Finocchiaro Aprile 2, Milan',
+      'Desayuno':'SÍ incluido (aprox. EUR 14/persona)',
+      'City Tax':'EUR 7 por persona por noche',
+      'Pasajeros':'Fernando Allena + Lucía Forté',
+      'Emergencias':'Levys Tours: +54 9 11 6700 2000',
+    },
+    warn:'⚠ City Tax EUR 7/persona/noche a pagar en el hotel. Cancelación gratuita hasta 26/05 17:59. Después: USD 226,67. Parking propio: EUR 30/día.',
+  },
+  cinqueterre: {
+    icon:'🏨', label:'Cinque Terre Behind',
+    title:'Hotel Cinque Terre Behind — La Spezia',
+    data:{
+      'Check-in':'30/05/2026 (16:00–22:30)',
+      'Check-out':'01/06/2026 (hasta 10:00)',
+      'Código reserva':'GWQTXJGI',
+      'Confirmación WELCOMEBEDS':'802679070',
+      'Tipo habitación':'Doble n°52 · Solo alojamiento',
+      'Dirección':'Via Riccardo Migliari 35, piso 4, La Spezia',
+      'Desayuno':'No incluido',
+      'City Tax':'EUR 2,50/persona/noche (máx 5 noches)',
+      'Pasajeros':'Fernando Allena + Lucía Forté',
+      'Emergencias':'Levys Tours: +54 9 11 6700 2000',
+    },
+    warn:'⚠ Sin recepción. Recibirán instrucciones por mail 48hs antes con código de cerradura electrónica. NO se puede registrar fuera del horario sin aviso previo. Acceso por entrada privada.',
+  },
+  martelli: {
+    icon:'🏨', label:'Hotel Martelli',
+    title:'Hotel Martelli — Florencia',
+    data:{
+      'Check-in':'01/06/2026',
+      'Check-out':'03/06/2026',
+      'Código reserva':'CVVRDKGQ',
+      'Confirmación RESTEL':'54422028-52282212',
+      'Tipo habitación':'Clásica doble · Alojamiento y Desayuno',
+      'Dirección':'Via Panzani 8, Florence 50123',
+      'Estrellas':'3 ★★★',
+      'Desayuno':'SÍ incluido',
+      'City Tax':'USD 24,00 pago directo en hotel',
+      'Pasajeros':'Fernando Allena + Lucía Forté',
+      'Emergencias':'Levys Tours: +54 9 11 6700 2000',
+    },
+    warn:'⚠ City Tax USD 24 a pagar en el hotel. Cancelación: 1 noche de penalización si se cancela con menos de 3 días. No show: cargo del 100%.',
+  },
+  duomosena: {
+    icon:'🏨', label:'Hotel Duomo Siena',
+    title:'Hotel Duomo — Siena',
+    data:{
+      'Check-in':'03/06/2026',
+      'Check-out':'04/06/2026',
+      'Código reserva':'LNWSUOBR',
+      'Confirmación ABREU':'15315-5874058',
+      'Tipo habitación':'Double Room · BB (Bed & Breakfast)',
+      'Dirección':'Via Stalloreggi 38, Siena',
+      'Estrellas':'3 ★★★',
+      'Desayuno':'SÍ incluido',
+      'Pasajeros':'Fernando Allena + Lucía Forté',
+      'Tel. emergencia ABREU':'+351 966019806 / +351 96 173 89 03',
+      'Emergencias Levys':'+54 9 11 6700 2000',
+    },
+    warn:'⚠ Reserva pre-paga por agencia. El hotel NO puede cobrar por los servicios del voucher.',
+  },
+  depetris: {
+    icon:'🏨', label:'Hotel De Petris Roma',
+    title:'Hotel De Petris — Roma',
+    data:{
+      'Check-in':'04/06/2026 (desde 14:00)',
+      'Check-out':'08/06/2026 (hasta 11:00)',
+      'Código reserva':'NEJVDXRV',
+      'Confirmación RESTEL':'54422233-52282421',
+      'Tipo habitación':'Doble o Twin Classic · Alojamiento y Desayuno',
+      'Dirección':'Via Rasella 142, Trevi, Roma',
+      'Estrellas':'3 ★★★',
+      'Desayuno':'SÍ incluido',
+      'City Tax':'EUR 6 por noche (desde 30/09/2023)',
+      'Pasajeros':'Fernando Allena + Lucía Forté',
+      'Emergencias':'Levys Tours: +54 9 11 6700 2000',
+    },
+    warn:'⚠ Check-in desde 14:00. Para llegadas después de las 22:00 contactar al hotel. Sin efectivo sobre EUR 1.000 (ley italiana). No show: cargo del 100%. City Tax EUR 6/noche a pagar en el hotel.',
+  },
+};
+
+// DAYS DATA
+const DAYS=[
+{date:"2026-05-18",label:"Lun 18",city:"Tucumán → Bs.As. → Madrid",
+hotel:null,breakfast:false,nightjet:false,hotelKey:null,trainKey:null,
+tabs:["programa","vuelo"],
+programa:[
+  {time:"18:25",text:"Vuelo AR 1483: Tucumán → Buenos Aires",sub:"Aeropuerto Int. Ezeiza · Terminal Domestic Arrivals"},
+  {time:"20:15",text:"Arribo a Buenos Aires (EZE)"},
+  {time:"23:55",text:"Vuelo AR 1132: Buenos Aires → Madrid",sub:"Terminal Departures · 1 valija 23kg incluida"},
+],
+transport:["Presentarse 3 hs antes del vuelo internacional.","Llevar DNI/pasaporte vigente para el check-in."],
+tips:["Llevar adaptador europeo tipo F (2 clavijas redondas).","Cargar el celular y power bank en el avión."],
+links:[]},
+
+{date:"2026-05-19",label:"Mar 19",city:"Madrid → Amsterdam",
+hotel:"Hotel Acostar, Kerkstraat 45-49",breakfast:false,nightjet:false,hotelKey:"acostar",trainKey:null,
+tabs:["programa","transport"],
+programa:[
+  {time:"17:10",text:"Arribo Madrid (MAD) Terminal 1"},
+  {time:"20:30",text:"Vuelo AR 7814 (KLM): Madrid → Amsterdam",sub:"Terminal 2 → Amsterdam AMS. Cód. KLM: BNF938"},
+  {time:"23:00",text:"Arribo Aeropuerto Schiphol, Amsterdam"},
+  {time:"23:15",text:"Bus 397 → Leidseplein (Plataforma B15-B17)",sub:"35 min. Luego 550 mts a pie al hotel. Ticket €4,40."},
+  {time:"23:50",text:"Check-in Hotel Acostar"},
+],
+transport:["Bus 397 Schiphol → Leidseplein: Plataforma B15-B17 · Ticket €4,40 pago contactless.","App GVB: transporte Amsterdam. App 9292: planificador de viajes Holanda."],
+tips:["Sin desayuno. Kiosko 24hs en Leidseplein para comer algo al llegar."],
+links:[{text:"Ruta bus 397",url:"https://maps.app.goo.gl/1pEo8wcHAg3cRXtZ6"}]},
+
+{date:"2026-05-20",label:"Mié 20",city:"Amsterdam",
+hotel:"Hotel Acostar",breakfast:false,nightjet:false,hotelKey:"acostar",trainKey:"rijksmuseum",
+tabs:["programa","bici","tips"],
+programa:[
+  {time:"10:00",text:"Free Tour — Stationsplein 10",sub:"Detrás de la Estación Central. Llegar 15 min antes."},
+  {time:"12:30",text:"Jordaan: Casa de Ana Frank · Cheese Museum"},
+  {time:"",text:"Dam Square · Begijnhof · 9 Streets · Leidseplein"},
+  {time:"",text:"Almuerzo: Foodhallen o Albert Cuypmarkt"},
+  {time:"14:00",text:"Rijksmuseum",sub:"TICKET RESERVADO 14:00–15:00 hs. Descargar app del museo."},
+  {time:"",text:"Vondelpark · Seven Houses"},
+  {time:"20:30",text:"Paseo en barco al atardecer desde Estación Central"},
+  {time:"21:30",text:"Barrio Rojo: Oude Kerk · Nieuwmarkt"},
+],
+transport:["Día recomendado en bici.","Barco al atardecer: Rederij Lovers o Blue Boat (~€18). Comprar online."],
+bici:[
+  {name:"OV-fiets",det:"Bici oficial trenes NL. Con tarjeta OV-chipkaart.",free:"€4,25/24h. Sin min. gratis."},
+  {name:"MacBike",det:"Alquiler físico en tiendas centro. Sin app.",free:"Desde €10/día."},
+],
+tips:[
+  "Casa de Ana Frank: reservar semanas antes en annefrankhouse.org.",
+  "Bloemenmarkt: Mercado de Flores flotante en el Singel.",
+  "App Rijksmuseum: descargar para visita multimedia gratuita.",
+],
+links:[{text:"Free Tour",url:"https://maps.app.goo.gl/DYk1eeBF6osr6oxX6"}]},
+
+{date:"2026-05-21",label:"Jue 21",city:"Amsterdam",
+hotel:"Hotel Acostar",breakfast:false,nightjet:false,hotelKey:"acostar",trainKey:null,
+tabs:["programa","tips"],
+programa:[
+  {time:"Mañana",text:"Jordaan (si quedó pendiente): Ana Frank · Cheese Museum"},
+  {time:"",text:"Grachtengordel · Dancing Houses · Staalmeestersbrug",sub:"Ruta a pie: maps.app.goo.gl/F6maxvCun5iML5wz7"},
+  {time:"",text:"De Wallen · Oude Kerk · Nieuwmarkt"},
+  {time:"Almuerzo",text:"Zona Nieuwmarkt"},
+  {time:"Tarde",text:"Biblioteca OBA Oosterdok (terraza gratis)"},
+  {time:"",text:"Museo NEMO Rooftop — gratis hasta 17:30 hs"},
+  {time:"",text:"Rooftop LuminAir (sobre el Hilton Amsterdam)"},
+],
+transport:[],
+tips:[
+  "Albert Cuypmarkt: mercado al aire libre más grande de Europa. Lun a Sáb.",
+  "NEMO Rooftop: subir antes de las 17:15. Gratis y con vistas al puerto.",
+  "Heineken Experience (Barrio de Pijp): ~€23. Reservar online.",
+  "Jenever (ginebra holandesa): probar en un brown café del Jordaan. ~€3.",
+],
+links:[{text:"Ruta centro histórico",url:"https://maps.app.goo.gl/F6maxvCun5iML5wz7"}]},
+
+{date:"2026-05-22",label:"Vie 22",city:"Amsterdam → Munich (Nightjet)",
+hotel:null,breakfast:false,nightjet:true,hotelKey:null,trainKey:"nightjet",
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"09:00",text:"Paseo en bici a Zaandam (~1 hora)",sub:"Ruta ida: maps.app.goo.gl/a5y1QVTztMegAkQP9"},
+  {time:"",text:"Vuelta por ruta alternativa. Opción: desviar a Haarlem.",sub:"Ruta vuelta: maps.app.goo.gl/w4o9E4mstPB1UPe6A"},
+  {time:"17:45",text:"Salir al tranvía Prinsengracht (120 mts del hotel)"},
+  {time:"17:50",text:"Tranvía 17 o 2 → Estación Centraal (15 min)",sub:"maps.app.goo.gl/kUHM5pmmaKHnG8JQ7"},
+  {time:"18:52",text:"NIGHTJET NJ 421: Amsterdam → Munich",sub:"Mini Cabin · Wagen 425 · Plazas UNTEN 51/52 · Incluye desayuno"},
+],
+transport:["Nightjet NJ 421: Amsterdam Centraal → München OST. Salida 18:52 hs.","Llevar tapones para oídos y almohada de cuello para el camarote.","Tranvía 17 o 2 desde Prinsengracht hasta Centraal: 15 min, ~€2,50."],
+tips:[
+  "Zaandam: molinos auténticos a 15 km. Muy fotogénico.",
+  "Devolver la bici antes de las 17 hs para no correr al tren.",
+  "Guardar documentos a mano en el camarote. No en la valija.",
+],
+links:[
+  {text:"Ruta ida Zaandam",url:"https://maps.app.goo.gl/a5y1QVTztMegAkQP9"},
+  {text:"Ruta vuelta",url:"https://maps.app.goo.gl/w4o9E4mstPB1UPe6A"},
+  {text:"Tranvía Centraal",url:"https://maps.app.goo.gl/kUHM5pmmaKHnG8JQ7"},
+]},
+
+{date:"2026-05-23",label:"Sáb 23",city:"Munich",
+hotel:"Creatif Hotel Elephant, Laemmerstrasse 6",breakfast:false,nightjet:false,hotelKey:"elephant",trainKey:null,
+tabs:["programa","bici","tips"],
+programa:[
+  {time:"06:42",text:"Arribo Estación München OST"},
+  {time:"07:00",text:"Tren S7 → München Hauptbahnhof (15 min)",sub:"Opciones: S2, S3, S8. Desde ahí 150 mts al hotel."},
+  {time:"07:15",text:"Check-in Creatif Hotel Elephant"},
+  {time:"10:45",text:"Free Tour — Marienplatz, Columna de María",sub:"Guía paraguas azul (Todo Tours). Llegar 15 min antes."},
+  {time:"",text:"Karlstor · Frauenkirche · Glockenspiel (11 y 12 hs) · Alter Peter · Viktualienmarkt"},
+  {time:"",text:"Odeonsplatz · Residenz · Maximilianstraße"},
+  {time:"Noche",text:"Cena en Hofbräuhaus am Platzl",sub:"Reservar online o llegar antes de las 18 hs."},
+],
+transport:["S-Bahn Munich: ticket zona M €3,90/viaje · €9,20/día. App MVV o DB Navigator."],
+bici:[
+  {name:"DB Rad",det:"App DB Navigator → 'Call a Bike'.",free:"30 min GRATIS con DB Comfort (€6,90/mes). Sin sub: €1 + €0,08/min."},
+  {name:"MVG Rad",det:"App oficial Munich: MVG Rad.",free:"Sin min. gratis. ~€0,08/min."},
+],
+tips:[
+  "Glockenspiel: ver a las 11 y 12 hs. Llegar 10 min antes.",
+  "Alter Peter: 300 escalones. Mejor vista de la ciudad.",
+  "Residenz: el Antiquarium es el espacio renacentista más grande al norte de los Alpes.",
+  "Viktualienmarkt: probar Brezel fresco y Weisswurst.",
+],
+links:[{text:"Free Tour Munich",url:"https://maps.app.goo.gl/PXZ4paymCjcvguav5"}]},
+
+{date:"2026-05-24",label:"Dom 24",city:"Munich",
+hotel:"Creatif Hotel Elephant",breakfast:false,nightjet:false,hotelKey:"elephant",trainKey:null,
+tabs:["programa","bici","tips"],
+programa:[
+  {time:"09:00",text:"Palacio de Nymphenburg",sub:"1h a pie o 30 min en subte (U1 → Rotkreuzplatz + tranvía 17)."},
+  {time:"13:00",text:"BMW Welt (entrada gratuita) · Olympiapark · Olympiaturm",sub:"maps.app.goo.gl/JRGg4erbRd9s24jWA"},
+  {time:"17:00",text:"Englischer Garten: Beer Garden Chinesischer Turm · Eisbachwelle (surf)"},
+],
+transport:["U-Bahn U1 → Rotkreuzplatz + tranvía 17 para Nymphenburg. Ticket diario €9,20."],
+bici:[{name:"DB Rad / MVG Rad",det:"Hoy perfecto para Englischer Garten y Olympiapark.",free:"DB Rad: 30 min gratis con subscripción."}],
+tips:[
+  "BMW Welt: arquitectura futurista, últimos modelos gratis.",
+  "Amalienburg (parque Nymphenburg): interior rococó deslumbrante.",
+  "Olympiaturm: €13. Panorámica con los Alpes al fondo.",
+  "Englischer Garten es más grande que Central Park de NY.",
+],
+links:[{text:"Ruta Olympiapark",url:"https://maps.app.goo.gl/JRGg4erbRd9s24jWA"}]},
+
+{date:"2026-05-25",label:"Lun 25",city:"Munich → Venecia",
+hotel:"Hotel Plaza Venice, Mestre (Con Desayuno)",breakfast:true,nightjet:false,hotelKey:"venecia",trainKey:"ecmunven",
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"07:00",text:"Salir a pie a München Hauptbahnhof (150 mts)"},
+  {time:"07:32",text:"EC 81 → Venezia Santa Lucia (~7:30 hs)",sub:"1ª clase · Vagón 263 · Asientos 11, 12"},
+  {time:"15:14",text:"Arribo Venezia Santa Lucia → Mestre"},
+  {time:"15:20",text:"Check-in Hotel Plaza Venice (frente a la estación)"},
+  {time:"16:30",text:"Bus → Piazzale Roma. Sacar tarjeta Actv.",sub:"Actv 72h: €30. En estación, hotel o app Hello Venezia."},
+  {time:"17:00",text:"Ferry 5.1 o 6 → Giardini Biennale (35 min)",sub:"maps.app.goo.gl/zSy6Tn5deWi4CxYE8"},
+  {time:"20:15",text:"Atardecer desde Ponte Accademia",sub:"maps.app.goo.gl/YydsMtkrTACwpYvG8"},
+  {time:"Noche",text:"Cenar en Barrio Dorsoduro"},
+],
+transport:["EC 81: Munich Hbf → Venezia Mestre. ~7:30 hs. Llevar snacks y agua.","Vaporetto Actv 72h (€30): lo más conveniente para 2 días en Venecia.","App: Hello Venezia o Actv Venezia para horarios.","En Venecia NO hay autos ni motos. Todo a pie o vaporetto."],
+tips:[
+  "Sacar tarjeta Actv apenas llegás. Evitás pagar €9 por cada barco.",
+  "Ponte Accademia: mejor punto para ver el atardecer sobre el Gran Canal.",
+],
+links:[
+  {text:"Ferry Biennale",url:"https://maps.app.goo.gl/zSy6Tn5deWi4CxYE8"},
+  {text:"Atardecer",url:"https://maps.app.goo.gl/YydsMtkrTACwpYvG8"},
+]},
+
+{date:"2026-05-26",label:"Mar 26",city:"Venecia",
+hotel:"Hotel Plaza Venice, Mestre",breakfast:true,nightjet:false,hotelKey:"venecia",trainKey:null,
+tabs:["programa","tips"],
+programa:[
+  {time:"09:00",text:"Piazzale Roma → Plaza San Marcos a pie (35 min)",sub:"Por San Polo y Rialto. maps.app.goo.gl/wJEKqBt5VczYQYKVA"},
+  {time:"09:30",text:"Plaza San Marcos: Basílica · Palacio Ducal · Puente de los Suspiros"},
+  {time:"11:00",text:"Barrio San Marco y Barrio Castello",sub:"Librería Acqua Alta · Basílica SS.Giovanni e Paolo"},
+  {time:"14:30",text:"Almuerzo en Bacaro. Cicchetti + Aperol (~€10-14)."},
+  {time:"15:00",text:"Ferry → Murano + Museo del Vidrio (hasta 18 hs)",sub:"maps.app.goo.gl/mGj7GB6u175C7s498"},
+  {time:"18:00",text:"Barrio Cannaregio: Ca d'Oro · Ghetto Ebraico"},
+  {time:"20:30",text:"Atardecer en Baia del Re. Cenar en el barrio."},
+],
+transport:["Traghetto: cruzar el Gran Canal por ~€2 (vs. €80+ en góndola turística).","Vaporetto Línea 1 al anochecer: Gran Canal completo."],
+tips:[
+  "Fondaco dei Tedeschi: terraza panorámica GRATUITA. Reservar en fondacotedeschi.com.",
+  "Plaza San Marcos: llegar ANTES de las 9:30 hs para evitar grupos de cruceros.",
+  "Ghetto Ebraico: el primer gueto judío de la historia (siglo XVI).",
+],
+links:[
+  {text:"Ruta San Marcos",url:"https://maps.app.goo.gl/wJEKqBt5VczYQYKVA"},
+  {text:"Ruta Cannaregio",url:"https://maps.app.goo.gl/mGj7GB6u175C7s498"},
+]},
+
+{date:"2026-05-27",label:"Mié 27",city:"Venecia → Verona → Milán",
+hotel:"Hotel IBIS Milano Centro (Con Desayuno)",breakfast:true,nightjet:false,hotelKey:"ibismilano",trainKey:"auto",
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"09:00",text:"Retirar auto Budget en Estación Mestre",sub:"Viale Stazione 8/C. Booking 45128768IT6. Llevar DNI + licencia + permiso internacional + tarjeta crédito."},
+  {time:"09:30",text:"Salida → Verona (110 km, ~1:15 hs)",sub:"maps.app.goo.gl/vLscerQmWm8swgkz8"},
+  {time:"11:00",text:"Verona: Arena · Porta Borsari · Piazza Erbe · Casa Julieta · Castel San Pietro",sub:"Funicolare €1,30. Ruta: maps.app.goo.gl/MGwbVck5mhTucfnf7"},
+  {time:"16:00",text:"Salida → Sirmione (50 km, ~40 min)"},
+  {time:"16:40",text:"Sirmione: Parking gratuito · Castillo Scaligero · Grutas de Catulo",sub:"maps.app.goo.gl/z8jVdiPwmryqyt6T7"},
+  {time:"18:00",text:"Salida → Milán (100 km, ~1:15 hs)",sub:"maps.app.goo.gl/QKUj61EPY8zV2ZscA"},
+  {time:"20:00",text:"Check-in Hotel IBIS Milano"},
+  {time:"21:00",text:"Cenar por Corso Como y Garibaldi (200 mts del hotel)"},
+],
+transport:["Auto Budget: retiro Venezia Mestre · devolución Roma Termini el 4/6.","Sirmione: parking gratuito fuera del centro amurallado.","GPS obligatorio. ⚠ NO entrar al centro de Milán con el auto (ZTL)."],
+tips:[
+  "Arena de Verona: anfiteatro romano mejor conservado del mundo.",
+  "Sirmione: península de 4 km. Grutas de Catulo con vista espectacular al lago.",
+  "Lavarello + vino Lugana: pescado típico del lago si almorzás en Sirmione.",
+],
+links:[
+  {text:"Ruta Verona-Sirmione-Milán",url:"https://maps.app.goo.gl/vLscerQmWm8swgkz8"},
+  {text:"Ruta a pie Sirmione",url:"https://maps.app.goo.gl/z8jVdiPwmryqyt6T7"},
+  {text:"Sirmione - Milán",url:"https://maps.app.goo.gl/QKUj61EPY8zV2ZscA"},
+]},
+
+{date:"2026-05-28",label:"Jue 28",city:"Milán",
+hotel:"Hotel IBIS Milano Centro",breakfast:true,nightjet:false,hotelKey:"ibismilano",trainKey:null,
+tabs:["programa","bici","vespa","tips"],
+programa:[
+  {time:"08:45",text:"Porta Nova · Parque BAM · Bosque Vertical · Piazza Gae Aulenti",sub:"maps.app.goo.gl/HqdwzqSVLjvs4Mfu9"},
+  {time:"10:30",text:"Free Tour junto al Duomo",sub:"Guía paraguas amarillo. maps.app.goo.gl/UXuo41oA6xe8SqjP9"},
+  {time:"13:00",text:"Duomo · Galleria V.E. II · Teatro alla Scala · Sforzesco · Sempione",sub:"maps.app.goo.gl/D3XpgBSZEAkb2wJN6"},
+  {time:"Tarde",text:"Barrio Brera"},
+  {time:"Noche",text:"Via Navigli"},
+],
+transport:["Metro ATM: M1/M2/M3/M4. Ticket €2,20/viaje · €7,60/día. App ATM Milano.","BikeMI: 30 min GRATIS por viaje con registro."],
+bici:[
+  {name:"BikeMI",det:"App oficial Milán. Estaciones fijas.",free:"30 min GRATIS por viaje. +€0,50/30 min."},
+  {name:"Mobike",det:"App: Mobike. Free-floating.",free:"Sin min. gratis. €1 + €0,15/min."},
+],
+vespa:[
+  {name:"Cityscoot",det:"Scooters eléctricos. Casco incluido.",free:"10 min GRATIS al registrarse. €0,28/min."},
+  {name:"Zig Zag",det:"Vespas eléctricas zona centro.",free:"Sin min. gratis. €0,25/min."},
+],
+tips:[
+  "BikeMI: devolver y retomar si el trayecto supera 30 min. El mejor sistema de la ciudad.",
+  "Galleria V.E. II: girar sobre el talón en el toro del mosaico. Tradición milanesa.",
+  "Teatro alla Scala: fundado 1778. Museo por €9. El de ópera más famoso del mundo.",
+  "Navigli: mejor ambiente nocturno. De martes a sábado con más movimiento.",
+  "Cityscoot: 10 min gratis al registrarse por primera vez.",
+],
+links:[
+  {text:"Ruta mañana",url:"https://maps.app.goo.gl/HqdwzqSVLjvs4Mfu9"},
+  {text:"Free Tour",url:"https://maps.app.goo.gl/UXuo41oA6xe8SqjP9"},
+  {text:"Sforzesco-Navigli",url:"https://maps.app.goo.gl/divdVmZg3117H5uP8"},
+]},
+
+{date:"2026-05-29",label:"Vie 29",city:"Milán",
+hotel:"Hotel IBIS Milano Centro",breakfast:true,nightjet:false,hotelKey:"ibismilano",trainKey:null,
+tabs:["programa","vespa","tips"],
+programa:[
+  {time:"Mañana",text:"Casa Galimberti (art nouveau) · Quadrilátero de Oro",sub:"maps.app.goo.gl/p5HYefsAySxuVMct7"},
+  {time:"",text:"Via Vittorio Emanuele II (compras, Apple Store)"},
+  {time:"Tarde",text:"Opcionales: Pinacoteca di Brera · Museo del Novecento"},
+  {time:"Noche",text:"Brera (si no fue ayer) o Navigli"},
+],
+transport:[],
+vespa:[{name:"Cityscoot",det:"Ideal para conectar Quadrilátero con Brera.",free:"10 min gratis al registrarse. €0,28/min."}],
+tips:[
+  "Quadrilátero de Oro: Via Montenapoleone, Via della Spiga. Las marcas de lujo italianas.",
+  "Casa Galimberti: fachada art nouveau en Via Malpighi 3. Muy fotogénica.",
+  "Pinacoteca di Brera: Mantegna, Caravaggio, Rafael. €15 entrada.",
+],
+links:[{text:"Ruta Quadrilátero",url:"https://maps.app.goo.gl/p5HYefsAySxuVMct7"}]},
+
+{date:"2026-05-30",label:"Sáb 30",city:"Milán → Turín → Fossano → Sta.Margherita → La Spezia",
+hotel:"Hotel Cinque Terre Behind, La Spezia (Sin Desayuno)",breakfast:false,nightjet:false,hotelKey:"cinqueterre",trainKey:null,
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"09:00",text:"Salida en auto (455 km total, ~6:15 hs)",sub:"maps.app.goo.gl/EW6PLB6GgAENa1KW8"},
+  {time:"10:50",text:"Turín: Porta Palatina · Catedral · Piazza Castello · Mole Antonelliana"},
+  {time:"13:00",text:"Salida → Fossano (65 km, 1hs). Almuerzo en el auto."},
+  {time:"14:00",text:"Fossano: Piazza Castello · Viale Mellano · centro histórico",sub:"Lugar del bisabuelo de Fernando. maps.app.goo.gl/RL8DYYNViR2Sd7nk9"},
+  {time:"15:00",text:"Salida → Santa Margherita Ligure (165 km, ~2:30 hs)"},
+  {time:"18:00",text:"Santa Margherita: Lungomare · Basílica · centro histórico"},
+  {time:"19:00",text:"Salida → La Spezia (81 km, ~1:15 hs)"},
+  {time:"20:00",text:"Check-in Hotel Cinque Terre Behind (piso 4)",sub:"⚠ Sin recepción. Recibirán código electrónico 48hs antes por mail."},
+],
+transport:["455 km en auto. Combustible: ~€60-70. Peajes autostrada: ~€25-30."],
+tips:[
+  "Fossano: buscar registros históricos familiares en el Ufficio Anagrafe del Palazzo Municipale.",
+  "Santa Margherita: barco a Portofino ~15 min, ~€10 ida. Muy pintoresco.",
+  "Hotel Cinque Terre Behind: ⚠ NO tiene recepción. Revisar el mail 48hs antes.",
+],
+links:[
+  {text:"Ruta del día",url:"https://maps.app.goo.gl/EW6PLB6GgAENa1KW8"},
+  {text:"Ruta Fossano",url:"https://maps.app.goo.gl/RL8DYYNViR2Sd7nk9"},
+]},
+
+{date:"2026-05-31",label:"Dom 31",city:"Cinque Terre",
+hotel:"Hotel Cinque Terre Behind",breakfast:false,nightjet:false,hotelKey:"cinqueterre",trainKey:null,
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"Mañana",text:"Barco y/o tren por las Cinque Terre"},
+  {time:"",text:"Riomaggiore · Manarola · Corniglia · Vernazza · Monterosso"},
+  {time:"",text:"Sendero Azzurro (si está abierto): ~2:30 hs total"},
+  {time:"Tarde",text:"Pasear por La Spezia · Castello San Giorgio"},
+],
+transport:["Cinque Terre Card Treno: €18,20/día. Comprar en Estación La Spezia Centrale.","Barco: Consorzio Marittimo. €30-40 día completo (todos los pueblos)."],
+tips:[
+  "Manarola: el más fotogénico. Mejor foto desde el mirador a la derecha de la estación.",
+  "Vernazza: el más bonito. Subir a la torre del castillo (€1,50).",
+  "Monterosso: el único con playa de arena. Ideal para bañarse.",
+  "Farinata: torta de garbanzos típica de La Spezia. Probar en panadería del centro.",
+],
+links:[]},
+
+{date:"2026-06-01",label:"Lun 1/6",city:"La Spezia → Lucca → Pisa → Florencia",
+hotel:"Hotel Martelli, Via Panzani 8, Florencia (Con Desayuno)",breakfast:true,nightjet:false,hotelKey:"martelli",trainKey:null,
+tabs:["programa","bici","tips"],
+programa:[
+  {time:"09:00",text:"Salida en auto (194 km total, ~2:45 hs)",sub:"maps.app.goo.gl/WjEcPEmwyBXJPAJD6"},
+  {time:"10:00",text:"Lucca: murallas medievales · centro histórico (~1:30 hs)"},
+  {time:"11:30",text:"Salida → Pisa (28 km, 30 min)"},
+  {time:"12:00",text:"Pisa: Torre · Baptisterio · Catedral. Almuerzo en Pisa."},
+  {time:"13:30",text:"Salida → Florencia (87 km, ~1:20 hs)"},
+  {time:"16:00",text:"Check-in Hotel Martelli"},
+  {time:"Tarde",text:"Ponte Vecchio → Piazzale Michelangelo (35 min)",sub:"Via dei Benci · Piazza Santa Croce: bares y pubs."},
+],
+transport:["Parking Florencia: Fortezza da Basso (500 mts del hotel): €2/h."],
+bici:[
+  {name:"Mobike",det:"App: Mobike. Free-floating.",free:"Sin min. gratis. €1 + €0,15/min."},
+  {name:"RideMovi",det:"App: RideMovi. Bici y scooters.",free:"Bici: €0,15/min. Scooter: €0,28/min."},
+],
+tips:[
+  "Lucca: alquilar bici EN las murallas medievales (€3/h). Dar la vuelta completa sobre las murallas.",
+  "Torre de Pisa: reservar subida online en opapisa.it. Sin reserva: 2-3 hs de cola.",
+],
+links:[{text:"Ruta del día",url:"https://maps.app.goo.gl/WjEcPEmwyBXJPAJD6"}]},
+
+{date:"2026-06-02",label:"Mar 2/6",city:"Florencia",
+hotel:"Hotel Martelli",breakfast:true,nightjet:false,hotelKey:"martelli",trainKey:null,
+tabs:["programa","vespa","tips"],
+programa:[
+  {time:"10:00",text:"Free Tour — Piazza San Lorenzo",sub:"Guía paraguas verde. 2 cuadras del hotel. maps.app.goo.gl/1pLQUBwjroj5sjM56"},
+  {time:"",text:"Duomo · Baptisterio · Piazza Repubblica · Piazza della Signoria · Ponte Vecchio"},
+  {time:"",text:"Galleria degli Uffizi · Museo Da Vinci · Mercato Centrale"},
+  {time:"Atardecer",text:"Piazzale Michelangelo"},
+  {time:"Noche",text:"Palazzo Pitti · Jardín Bóboli · Oltrarno · Barrio Santo Spirito"},
+],
+transport:[],
+vespa:[
+  {name:"RideMovi Scooter",det:"Útil para subir a Piazzale Michelangelo.",free:"€0,28/min. Sin min. gratis."},
+  {name:"Cityscoot",det:"App: Cityscoot. También cubre Florencia.",free:"10 min gratis al registrarse. €0,28/min."},
+],
+tips:[
+  "Galleria degli Uffizi: reservar en uffizi.it. Sin reserva: 2-3 hs de cola.",
+  "Mercato Centrale (2° piso): gastronomía regional. Almuerzo ~€12-15.",
+  "Oltrarno: talleres artesanales activos. El barrio más auténtico de Florencia.",
+  "Barrio Santo Spirito: la plaza más auténtica. Vino con locales en los escalones.",
+],
+links:[{text:"Free Tour Florencia",url:"https://maps.app.goo.gl/1pLQUBwjroj5sjM56"}]},
+
+{date:"2026-06-03",label:"Mié 3/6",city:"Florencia → Toscana → Siena",
+hotel:"Hotel Duomo, Via Stalloreggi 38, Siena (Con Desayuno)",breakfast:true,nightjet:false,hotelKey:"duomosena",trainKey:"accademia",
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"09:15",text:"Galería de la Academia — El David",sub:"VOUCHER F640150. INGRESO RESERVADO, NO hacer fila. Llevar DNI. Llegar 15 min antes."},
+  {time:"11:00",text:"Salida en auto por la Toscana (160 km, ~3 hs)",sub:"maps.app.goo.gl/ZP72NbwXwWcEWNXp9"},
+  {time:"12:00",text:"Certaldo: pueblo medieval (46 km, 1hs)"},
+  {time:"13:00",text:"San Gimignano: torres medievales · Gelateria Dondoli (mejor helado del mundo)"},
+  {time:"15:30",text:"Volterra: ciudad etrusca amurallada (30 km, 40 min)"},
+  {time:"17:00",text:"Monteriggioni: pueblo medieval (40 km, 50 min)"},
+  {time:"18:00",text:"Check-in Hotel Duomo, Siena"},
+  {time:"18:30",text:"Piazza del Campo · Duomo de Siena · Torre del Mangia"},
+],
+transport:["Ruta por caminos rurales. Evitar autopista para disfrutar el paisaje toscano."],
+tips:[
+  "Gelateria Dondoli (San Gimignano): campeonato mundial de helado. Cola pero vale.",
+  "Duomo de Siena: suelo de mármol taraceado único en el mundo.",
+  "Torre del Mangia: 400 escalones. Mejor vista de Siena.",
+  "Monteriggioni: inspiración de Assassin's Creed. 14 torres intactas.",
+],
+links:[{text:"Ruta Toscana",url:"https://maps.app.goo.gl/ZP72NbwXwWcEWNXp9"}]},
+
+{date:"2026-06-04",label:"Jue 4/6",city:"Siena → Montalcino → Pienza → Montepulciano → Roma",
+hotel:"Hotel De Petris, Via Rasella 142, Roma (Con Desayuno)",breakfast:true,nightjet:false,hotelKey:"depetris",trainKey:null,
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"09:00",text:"Salida en auto (255 km, ~4:15 hs total)",sub:"maps.app.goo.gl/diEz67tW6ujb5ezT7"},
+  {time:"10:00",text:"Montalcino: fortaleza · vinos Brunello (40 km, 50 min)"},
+  {time:"11:30",text:"Pienza: ciudad renacentista perfecta (23 km, 25 min)"},
+  {time:"13:30",text:"Montepulciano: Piazza Grande · vinos Nobile · cantinas subterráneas"},
+  {time:"17:30",text:"Salida → Roma (177 km, ~2:15 hs)"},
+  {time:"19:30",text:"Devolver auto en Termini (20 min a pie al hotel)",sub:"maps.app.goo.gl/e4eCR83tH3Q5fVNB9"},
+  {time:"20:00",text:"Check-in Hotel De Petris, Via Rasella 142"},
+  {time:"",text:"Opción: atardecer en Circo Máximo o Piazza Trilussa (música 21-22 hs)"},
+],
+transport:["Devolver el auto en Roma Termini (Budget). Llevar el voucher del alquiler.","⚠ Roma: ZTL activa — no circular en auto dentro de la ciudad."],
+tips:[
+  "Cantinas de Montepulciano: bodega bajo tierra, gratis para entrar y degustar Vino Nobile.",
+  "Hotel De Petris: a 5 min de la Fontana di Trevi y 10 min del Panteón.",
+  "Brunello di Montalcino: uno de los mejores vinos de Italia.",
+],
+links:[
+  {text:"Ruta Toscana-Roma",url:"https://maps.app.goo.gl/diEz67tW6ujb5ezT7"},
+  {text:"Parking Termini",url:"https://maps.app.goo.gl/e4eCR83tH3Q5fVNB9"},
+]},
+
+{date:"2026-06-05",label:"Vie 5/6",city:"Roma",
+hotel:"Hotel De Petris",breakfast:true,nightjet:false,hotelKey:"depetris",trainKey:null,
+tabs:["programa","vespa","tips"],
+programa:[
+  {time:"10:00",text:"Free Tour — Plaza de España, esquina Vicolo del Bottino",sub:"10 min del hotel. Llegar 15 min antes. maps.app.goo.gl/NWYK7ZL6EMSjLSLU9"},
+  {time:"13:00",text:"Almuerzo en Campo de'Fiori (mercado hasta mediodía, bares después)"},
+  {time:"Tarde",text:"Panteón · Piazza Navona · Fontana di Trevi · Via del Corso"},
+  {time:"",text:"Piazza Venezia · Monumento V.E. II · Piazza del Campidoglio"},
+],
+transport:["Metro Roma: A (naranja) y B (azul). Ticket €1,50/viaje · €7/día. App: Roma Mobile."],
+vespa:[
+  {name:"Cityscoot",det:"Scooters eléctricos. Casco incluido.",free:"10 min gratis al registrarse. €0,28/min."},
+  {name:"Cooltra",det:"Vespas con gasolina. Requiere licencia de moto.",free:"Sin min. gratis. Desde €45/día."},
+],
+tips:[
+  "Panteón: €5 (gratis el domingo de mañana). Llegar antes de las 9:30.",
+  "Fontana di Trevi: ir de mañana o de noche para evitar la multitud.",
+  "Monumento V.E. II: terraza gratuita con vista de 360° sobre Roma.",
+],
+links:[{text:"Free Tour Roma",url:"https://maps.app.goo.gl/NWYK7ZL6EMSjLSLU9"}]},
+
+{date:"2026-06-06",label:"Sáb 6/6",city:"Roma — Vaticano",
+hotel:"Hotel De Petris",breakfast:true,nightjet:false,hotelKey:"depetris",trainKey:"vaticano",
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"07:15",text:"Salida hacia Museos Vaticanos (45 min a pie)"},
+  {time:"08:00",text:"Mostrar voucher 30 min antes al personal en Viale Vaticano",sub:"Fila reservada lado derecho. Luego Sportello Visite Guidate."},
+  {time:"08:30",text:"Tour guiado Museos Vaticanos + Capilla Sixtina (español)",sub:"2 pax · Código: 2L2N0RT42JVMU3NUH · Visita 28086/2026-10"},
+  {time:"",text:"Basílica de San Pedro · Subida a la cúpula (vistas únicas)"},
+  {time:"Mediodía",text:"Paseo del Gianicolo → Trastevere"},
+  {time:"Tarde",text:"Feria en Trastevere · Piazza Santa Maria in Trastevere"},
+],
+transport:["Desde el hotel: 45 min a pie por Via del Corso → Castel Sant'Angelo → Viale Vaticano."],
+tips:[
+  "Cúpula de San Pedro: 551 escalones o ascensor (€6/€8). Vistas incomparables.",
+  "Capilla Sixtina: silencio estricto. No fotos. El guía explicará antes o después.",
+  "Gianicolo: cañonazo a las 12 hs (tradición desde 1904).",
+  "Trastevere: el barrio más auténtico y barato para comer.",
+  "⚠ Código voucher: 2L2N0RT42JVMU3NUH. Llevar en pantalla del celular.",
+],
+links:[]},
+
+{date:"2026-06-07",label:"Dom 7/6",city:"Roma — Todo Gratis 🎉",
+hotel:"Hotel De Petris",breakfast:true,nightjet:false,hotelKey:"depetris",trainKey:null,
+tabs:["programa","bici","tips"],
+programa:[
+  {time:"07:15",text:"Salida al Coliseo (25 min a pie). Llegar 07:45."},
+  {time:"08:30",text:"Coliseo GRATIS · Foro Romano · Monte Palatino",sub:"Entrada conjunta gratuita el 1er domingo de cada mes."},
+  {time:"10:30",text:"Circo Máximo · Bocca della Verità · Piazza del Campidoglio"},
+  {time:"13:30",text:"Palazzo Altemps (estatuas clásicas, poca cola)",sub:"25 min desde el Foro Romano."},
+  {time:"15:00",text:"Castel Sant'Angelo — también GRATIS el domingo",sub:"10 min del Palazzo Altemps."},
+  {time:"17:00",text:"Piazza del Popolo · Terraza Pincio · Villa Borghese"},
+  {time:"18:00",text:"Barrio Coppedè (arquitectura fantástica, casi ningún turista)"},
+  {time:"20:00",text:"Cena"},
+],
+transport:["Hoy todo a pie o en bici. No se necesita metro."],
+bici:[{name:"Lime / Helbiz",det:"Hoy ideal para ir de Villa Borghese a Barrio Coppedè.",free:"Lime: €1 desbloqueo + €0,25/min."}],
+tips:[
+  "¡El mejor día en Roma! Coliseo + Foro + Palatino + Castel Sant'Angelo = todos GRATIS.",
+  "Barrio Coppedè: arquitectura de cuento de hadas entre Via Dora y Piazza Mincio.",
+  "Bocca della Verità: llegar antes de las 10 hs para evitar cola.",
+  "Terraza Pincio: la vista clásica de Roma con cúpula de San Pedro. Gratis.",
+],
+links:[]},
+
+{date:"2026-06-08",label:"Lun 8/6",city:"Roma → Buenos Aires",
+hotel:null,breakfast:true,nightjet:false,hotelKey:null,trainKey:null,
+tabs:["programa","transport","tips"],
+programa:[
+  {time:"09:00",text:"Compras de último momento por el centro"},
+  {time:"16:00",text:"Salir del hotel hacia Roma Termini (25 min a pie)"},
+  {time:"17:00",text:"Llegada al Aeropuerto Fiumicino (35 min en tren desde Termini)",sub:"maps.app.goo.gl/hPT5BdPsB6R5AHwm6"},
+  {time:"19:15",text:"Vuelo AR 1141: Roma → Buenos Aires (EZE)"},
+],
+transport:["Leonardo Express: Roma Termini → Fiumicino. Cada 30 min. €14/persona.","No confundir con tren FL1 (más lento, más barato pero demora más)."],
+tips:[
+  "Leonardo Express: el más rápido al aeropuerto. Sale de Termini.",
+  "Presentarse 3 hs antes del vuelo internacional.",
+  "Guardar souvenirs líquidos en valija documentada.",
+],
+links:[{text:"Aeropuerto",url:"https://maps.app.goo.gl/hPT5BdPsB6R5AHwm6"}]},
+
+{date:"2026-06-09",label:"Mar 9/6",city:"Buenos Aires → Tucumán",
+hotel:null,breakfast:false,nightjet:false,hotelKey:null,trainKey:null,
+tabs:["programa"],
+programa:[
+  {time:"04:40",text:"Arribo Buenos Aires (EZE)"},
+  {time:"07:15",text:"Vuelo AR 1470: Buenos Aires → Tucumán"},
+  {time:"09:15",text:"Arribo Tucumán 🏠",sub:"¡Bienvenidos de vuelta!"},
+],
+transport:[],tips:[],links:[]},
+];
+
+// ═══════════════════════════════════════════
+// PAGE LOGIC
+// ═══════════════════════════════════════════
+
+let currentDay = 0;
+let activeTab = {};
+
+function getTodayIdx() {
+  const t = new Date().toISOString().split('T')[0];
+  let f = DAYS.findIndex(d => d.date === t);
+  if (f >= 0) return f;
+  let fu = DAYS.findIndex(d => d.date > t);
+  return fu >= 0 ? fu : 0;
+}
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('visible');
+  el.classList.add('active');
+  document.getElementById('dayNavWrap').style.display = id === 'itinerario' ? 'block' : 'none';
+  if (id === 'tickets') buildTicketsPage();
+  if (id === 'vuelos') buildVuelosPage();
+  if (id === 'info') buildInfoPage();
+  window.scrollTo(0, 0);
+}
+
+// ── ITINERARIO ──
+function initDayNav() {
+  const nav = document.getElementById('dayNav');
+  nav.innerHTML = '';
+  const ti = getTodayIdx();
+  DAYS.forEach((d, i) => {
+    const b = document.createElement('button');
+    b.className = 'day-btn' + (i === currentDay ? ' active' : '') + (i === ti ? ' today' : '');
+    const parts = d.label.split(' ');
+    b.innerHTML = `<span class="dnum">${parts[1]}</span><span class="dday">${parts[0]}</span>`;
+    b.onclick = () => { currentDay = i; initDayNav(); renderDay(); };
+    nav.appendChild(b);
+  });
+  setTimeout(() => {
+    const el = nav.children[currentDay];
+    if (el) el.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+  }, 50);
+}
+
+function renderDay() {
+  const d = DAYS[currentDay];
+  const ti = getTodayIdx();
+  const banner = document.getElementById('todayBanner');
+  banner.innerHTML = currentDay === ti
+    ? `<div class="today-banner">📍 Hoy estás en: ${d.city}</div>` : '';
+
+  if (!activeTab[currentDay]) activeTab[currentDay] = d.tabs[0];
+  const at = activeTab[currentDay];
+
+  let h = `<div class="card">`;
+  h += `<div class="card-hdr"><div><div class="card-hdr-title">${d.label}</div><div class="card-hdr-sub">${d.city}</div></div></div>`;
+  h += `<div class="card-body">`;
+
+  // Hotel
+  if (d.hotel) {
+    const bkTxt = d.breakfast ? 'Desayuno incluido' : 'Sin desayuno';
+    const bkCls = d.breakfast ? 'yes' : 'no';
+    h += `<div class="hotel-row">
+      <div class="hotel-icon">🏨</div>
+      <div class="hotel-info">
+        <div class="hotel-name">${d.hotel}</div>
+        <div class="hotel-bk ${bkCls}">${bkTxt}</div>
+      </div>
+      ${d.hotelKey ? `<button class="btn-ticket" onclick="openModal('hotel','${d.hotelKey}')">Reserva</button>` : ''}
+    </div>`;
+  }
+
+  // Nightjet
+  if (d.nightjet) {
+    h += `<div class="nightjet-row">
+      <div style="font-size:22px">🌙</div>
+      <div class="hotel-info">
+        <div class="nj-title">Nightjet NJ 421 — Tren nocturno</div>
+        <div class="nj-sub">Amsterdam → Munich · Mini Cabin · Incluye desayuno</div>
+      </div>
+      <button class="btn-ticket blue" onclick="openModal('ticket','nightjet')">Ticket</button>
+    </div>`;
+  }
+
+  // Train ticket button
+  if (d.trainKey && !d.nightjet) {
+    const tkMap = {
+      ecmunven: { label: 'EC 81 Ticket', key: 'ecmunven', color: '' },
+      auto: { label: 'Voucher Auto', key: 'auto', color: 'green' },
+      rijksmuseum: { label: 'Rijksmuseum', key: 'rijksmuseum', color: '' },
+      accademia: { label: 'Voucher Accademia', key: 'accademia', color: '' },
+      vaticano: { label: 'Voucher Vaticano', key: 'vaticano', color: '' },
+    };
+    const tk = tkMap[d.trainKey];
+    if (tk) {
+      h += `<div style="margin-bottom:.4rem">
+        <button class="btn-ticket ${tk.color}" onclick="openModal('ticket','${tk.key}')">🎫 ${tk.label}</button>
+      </div>`;
+    }
+  }
+
+  // Section tabs
+  const tabLabels = { programa: 'Programa', transport: 'Transporte', bici: 'Bici', vespa: 'Vespa', tips: 'Tips' };
+  const availTabs = d.tabs.filter(t => {
+    if (t === 'bici' && (!d.bici || !d.bici.length)) return false;
+    if (t === 'vespa' && (!d.vespa || !d.vespa.length)) return false;
+    if (t === 'transport' && (!d.transport || !d.transport.length)) return false;
+    if (t === 'vuelo') return false;
+    return true;
+  });
+
+  h += `<div class="stabs">`;
+  availTabs.forEach(t => {
+    h += `<button class="stab${at === t ? ' active' : ''}" onclick="switchTab('${t}')">${tabLabels[t]}</button>`;
+  });
+  h += `</div>`;
+
+  // Tab: Programa
+  h += `<div id="tp-programa" style="${at === 'programa' ? '' : 'display:none'}">`;
+  h += `<div class="tl">`;
+  (d.programa || []).forEach(it => {
+    let sub = it.sub || '';
+    sub = sub.replace(/(maps\.app\.goo\.gl\/\S+)/g, (m) =>
+      `<a class="link-btn" href="https://${m}" target="_blank">🗺 Ruta</a>`
+    );
+    h += `<div class="ti"><div class="ti-time">${it.time || ''}</div><div class="ti-dot"></div><div class="ti-text">${it.text}${sub ? `<span class="ti-sub">${sub}</span>` : ''}</div></div>`;
+  });
+  h += `</div>`;
+  if (d.links && d.links.length) {
+    h += `<div style="margin-top:.5rem">`;
+    d.links.forEach(l => {
+      h += `<a class="link-btn" href="${l.url}" target="_blank">🗺 ${l.text}</a>`;
+    });
+    h += `</div>`;
+  }
+  h += `</div>`;
+
+  // Tab: Transporte
+  h += `<div id="tp-transport" style="${at === 'transport' ? '' : 'display:none'}">`;
+  (d.transport || []).forEach(t => {
+    h += `<div class="tr-row"><div class="tr-icon">🚌</div><div>${t}</div></div>`;
+  });
+  h += `</div>`;
+
+  // Tab: Bici
+  h += `<div id="tp-bici" style="${at === 'bici' ? '' : 'display:none'}">`;
+  if (d.bici && d.bici.length) {
+    h += `<div class="apps-grid">`;
+    d.bici.forEach(a => {
+      h += `<div class="app-card"><div class="app-name">🚲 ${a.name}</div><div class="app-det">${a.det}</div><div class="app-free">${a.free}</div></div>`;
+    });
+    h += `</div>`;
+  }
+  h += `</div>`;
+
+  // Tab: Vespa
+  h += `<div id="tp-vespa" style="${at === 'vespa' ? '' : 'display:none'}">`;
+  if (d.vespa && d.vespa.length) {
+    h += `<div class="apps-grid">`;
+    d.vespa.forEach(a => {
+      h += `<div class="app-card"><div class="app-name">🛵 ${a.name}</div><div class="app-det">${a.det}</div><div class="app-free">${a.free}</div></div>`;
+    });
+    h += `</div>`;
+  }
+  h += `</div>`;
+
+  // Tab: Tips
+  h += `<div id="tp-tips" style="${at === 'tips' ? '' : 'display:none'}">`;
+  (d.tips || []).forEach(t => {
+    h += `<div class="tip-row">💡 ${t}</div>`;
+  });
+  h += `</div>`;
+
+  h += `</div></div>`;
+
+  // Nav buttons
+  h += `<div class="nav-btns">
+    <button class="nav-btn" onclick="changeDay(-1)" ${currentDay === 0 ? 'disabled' : ''}>← Anterior</button>
+    <button class="nav-btn" onclick="changeDay(1)" ${currentDay === DAYS.length - 1 ? 'disabled' : ''}>Siguiente →</button>
+  </div>`;
+
+  document.getElementById('dayContent').innerHTML = h;
+}
+
+function switchTab(t) {
+  activeTab[currentDay] = t;
+  renderDay();
+  document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function changeDay(dir) {
+  currentDay = Math.max(0, Math.min(DAYS.length - 1, currentDay + dir));
+  initDayNav();
+  renderDay();
+  document.getElementById('todayBanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── TICKETS PAGE ──
+function buildTicketsPage() {
+  const sections = [
+    { title: '✈ Vuelos', icon: '✈', badge: 'badge-flight', items: [
+      { key: 'vuelo', title: 'Aerolíneas Argentinas — Ida y vuelta', date: '18 mayo — 9 junio', sub: 'Fernando Allena + Lucía Forté · Código: OEVDZD', type: 'ticket' },
+    ]},
+    { title: '🚂 Trenes', icon: '🚂', badge: 'badge-train', items: [
+      { key: 'nightjet', title: 'Nightjet NJ 421 — Amsterdam → Munich', date: '22 mayo · 18:52 hs', sub: 'Mini Cabin · 2 adultos · EUR 259,80', type: 'ticket' },
+      { key: 'ecmunven', title: 'EC 81 — Munich → Venezia', date: '25 mayo · 07:32 hs', sub: '1ª clase · Vagón 263 · EUR 245,78', type: 'ticket' },
+    ]},
+    { title: '🚗 Auto', icon: '🚗', badge: 'badge-car', items: [
+      { key: 'auto', title: 'Budget VW T-Cross — Mestre → Roma Termini', date: '27 mayo – 4 junio · 9 días', sub: 'Booking 45128768IT6 · KM ilimitados', type: 'ticket' },
+    ]},
+    { title: '🏨 Hoteles', icon: '🏨', badge: 'badge-hotel', items: [
+      { key: 'acostar', title: 'Hotel Acostar — Amsterdam', date: '19-22 mayo', sub: 'Cód: IUTQMXIS · Sin desayuno', type: 'hotel' },
+      { key: 'elephant', title: 'Creatif Hotel Elephant — Munich', date: '23-25 mayo', sub: 'Cód: PBTOCEHF · Sin desayuno', type: 'hotel' },
+      { key: 'venecia', title: 'Plaza Hotel Venice — Mestre', date: '25-27 mayo', sub: 'Cód: FXQNEFNQ · Con desayuno', type: 'hotel' },
+      { key: 'ibismilano', title: 'Ibis Milano Centro — Milán', date: '27-30 mayo', sub: 'Cód: IXCDCJWY · Con desayuno', type: 'hotel' },
+      { key: 'cinqueterre', title: 'Cinque Terre Behind — La Spezia', date: '30 mayo – 1 jun.', sub: 'Cód: GWQTXJGI · Sin desayuno · ⚠ Sin recepción', type: 'hotel' },
+      { key: 'martelli', title: 'Hotel Martelli — Florencia', date: '1-3 junio', sub: 'Cód: CVVRDKGQ · Con desayuno', type: 'hotel' },
+      { key: 'duomosena', title: 'Hotel Duomo — Siena', date: '3-4 junio', sub: 'Cód: LNWSUOBR · Con desayuno', type: 'hotel' },
+      { key: 'depetris', title: 'Hotel De Petris — Roma', date: '4-8 junio', sub: 'Cód: NEJVDXRV · Con desayuno', type: 'hotel' },
+    ]},
+    { title: '🎫 Vouchers museos', icon: '🎫', badge: 'badge-voucher', items: [
+      { key: 'rijksmuseum', title: 'Rijksmuseum — E-Ticket ×2', date: '20 mayo · 14:00–15:00 hs', sub: 'Cód: 3289016507667 / 3289016507668', type: 'ticket' },
+      { key: 'accademia', title: 'Galería de la Academia — El David', date: '3 junio · 09:15 hs', sub: 'Voucher F640150 · Booking 20718919B', type: 'ticket' },
+      { key: 'vaticano', title: 'Museos Vaticanos — Visita Guiada', date: '6 junio · 08:30 hs', sub: 'Código: 2L2N0RT42JVMU3NUH · €80 total', type: 'ticket' },
+    ]},
+  ];
+
+  let h = '';
+  sections.forEach(s => {
+    h += `<div style="margin-bottom:.25rem;font-size:12px;font-weight:700;color:var(--gray);padding:.25rem 0">${s.title}</div>`;
+    s.items.forEach(item => {
+      h += `<div class="tkt-card">
+        <div class="tkt-hdr">
+          <div class="tkt-icon">${s.icon}</div>
+          <div style="flex:1">
+            <div class="tkt-title">${item.title}</div>
+            <div class="tkt-date">${item.date}</div>
+            <div style="font-size:10px;color:#888;margin-top:1px">${item.sub}</div>
+          </div>
+          <button class="btn-ticket" onclick="openModal('${item.type}','${item.key}')">Ver</button>
+        </div>
+      </div>`;
+    });
+    h += `<div style="height:.5rem"></div>`;
+  });
+
+  document.getElementById('ticketsGrid').innerHTML = h;
+}
+
+// ── VUELOS PAGE ──
+function buildVuelosPage() {
+  const segments = [
+    { vuelo: 'AR 1483', de: 'Tucumán (TUC)', a: 'Buenos Aires (EZE)', fecha: '18/05/2026', sal: '18:25', arr: '20:15', tipo: 'Doméstico', terminal: 'Domestic Arrivals' },
+    { vuelo: 'AR 1132', de: 'Buenos Aires (EZE)', a: 'Madrid (MAD)', fecha: '18/05/2026', sal: '23:55', arr: '19/05 17:10', tipo: 'Internacional', terminal: 'Departures T1' },
+    { vuelo: 'AR 7814 (KLM)', de: 'Madrid (MAD)', a: 'Amsterdam (AMS)', fecha: '19/05/2026', sal: '20:30', arr: '23:00', tipo: 'Internacional', terminal: 'T2 · KLM: BNF938' },
+    { vuelo: 'AR 1141', de: 'Roma Fiumicino (FCO)', a: 'Buenos Aires (EZE)', fecha: '08/06/2026', sal: '19:15', arr: '09/06 04:40', tipo: 'Internacional', terminal: 'Terminal 3' },
+    { vuelo: 'AR 1470', de: 'Buenos Aires (EZE)', a: 'Tucumán (TUC)', fecha: '09/06/2026', sal: '07:15', arr: '09:15', tipo: 'Doméstico', terminal: 'Departures' },
+  ];
+
+  let h = `<div class="card">
+    <div class="card-hdr"><div class="card-hdr-title">✈ Aerolíneas Argentinas</div><div class="card-hdr-sub">Código reserva: OEVDZD</div></div>
+    <div class="card-body">
+    <div style="display:flex;gap:8px;margin-bottom:.75rem;flex-wrap:wrap">
+      <div style="background:var(--orange-l);border-radius:var(--rs);padding:5px 10px;font-size:11px"><b>Fernando Allena</b><br>Boleto: 0442165761215</div>
+      <div style="background:var(--orange-l);border-radius:var(--rs);padding:5px 10px;font-size:11px"><b>Lucía Forté</b><br>Boleto: 0442165761217</div>
+    </div>`;
+
+  segments.forEach((s, i) => {
+    h += `<div style="border:1px solid #EDE9E3;border-radius:var(--rs);padding:9px 11px;margin-bottom:.4rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--orange)">${s.vuelo}</div>
+          <div style="font-size:11px;font-weight:600;margin-top:2px">${s.de}</div>
+          <div style="font-size:10px;color:#888">→ ${s.a}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;font-weight:600">${s.sal} → ${s.arr}</div>
+          <div style="font-size:10px;color:#888">${s.fecha}</div>
+          <span class="badge ${s.tipo === 'Doméstico' ? 'badge-hotel' : 'badge-flight'}" style="margin-top:2px">${s.tipo}</span>
+        </div>
+      </div>
+      <div style="font-size:10px;color:#666;margin-top:4px">${s.terminal}</div>
+    </div>`;
+  });
+
+  h += `<div class="modal-warn">📋 Presentarse 3 hs antes en vuelos internacionales y 2 hs en domésticos. Llevar DNI vigente. 1 valija 23kg en bodega incluida por persona.</div>`;
+  h += `</div></div>`;
+
+  document.getElementById('vuelosContent').innerHTML = h;
+}
+
+// ── INFO PAGE ──
+function buildInfoPage() {
+  let h = `
+  <div class="card">
+    <div class="card-hdr"><div class="card-hdr-title">📞 Contactos de emergencia</div></div>
+    <div class="card-body">
+      <div class="tr-row"><div class="tr-icon">🆘</div><div><b>Levys Tours (emergencias)</b><br>+54 9 11 6700 2000<br>carolina@levystours.com.ar</div></div>
+      <div class="tr-row"><div class="tr-icon">🚗</div><div><b>Budget / CarzRental (auto)</b><br>info@carzrental.com<br>WA: +1 786 820 8222</div></div>
+      <div class="tr-row"><div class="tr-icon">🎨</div><div><b>Galería Academia (Florencia)</b><br>info@florence-museum.com<br>+39 055.713.655</div></div>
+      <div class="tr-row"><div class="tr-icon">⛪</div><div><b>Museos Vaticanos</b><br>tours.musei@scv.va<br>+39 0669864091</div></div>
+      <div class="tr-row"><div class="tr-icon">🏨</div><div><b>ABREU (Hotel Siena)</b><br>+351 966019806</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="card-hdr-title">🚲 Apps de movilidad</div></div>
+    <div class="card-body">
+      <div class="sec-label">Amsterdam</div>
+      <div class="tr-row"><div class="tr-icon">🚲</div><div><b>OV-fiets</b> · €4,25/24h. Con tarjeta OV-chipkaart.</div></div>
+      <div class="tr-row"><div class="tr-icon">🚲</div><div><b>MacBike / Star Bikes</b> · Desde €10/día.</div></div>
+      <div class="sec-label">Munich</div>
+      <div class="tr-row"><div class="tr-icon">🚲</div><div><b>DB Rad (Call a Bike)</b> · <span style="color:var(--green);font-weight:600">30 min GRATIS</span> con DB Comfort.</div></div>
+      <div class="tr-row"><div class="tr-icon">🚲</div><div><b>MVG Rad</b> · Sin minutos gratis. €0,08/min.</div></div>
+      <div class="sec-label">Milán</div>
+      <div class="tr-row"><div class="tr-icon">🚲</div><div><b>BikeMI</b> · <span style="color:var(--green);font-weight:600">30 min GRATIS</span> por viaje con registro.</div></div>
+      <div class="tr-row"><div class="tr-icon">🛵</div><div><b>Cityscoot</b> · <span style="color:var(--green);font-weight:600">10 min gratis</span> al registrarse. €0,28/min.</div></div>
+      <div class="sec-label">Florencia</div>
+      <div class="tr-row"><div class="tr-icon">🚲</div><div><b>RideMovi</b> · Bici €0,15/min · Scooter €0,28/min.</div></div>
+      <div class="tr-row"><div class="tr-icon">🛵</div><div><b>Cityscoot</b> · 10 min gratis al registrarse.</div></div>
+      <div class="sec-label">Roma</div>
+      <div class="tr-row"><div class="tr-icon">🚲</div><div><b>Lime / Helbiz</b> · €1 desbloqueo + €0,15-0,25/min.</div></div>
+      <div class="tr-row"><div class="tr-icon">🛵</div><div><b>Cityscoot</b> · 10 min gratis al registrarse.</div></div>
+      <div class="tr-row"><div class="tr-icon">🛵</div><div><b>Cooltra</b> · Vespa con gasolina. Requiere licencia de moto.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="card-hdr-title">🗓 Días gratuitos importantes</div></div>
+    <div class="card-body">
+      <div class="tip-row">🎉 <b>Dom 7 junio</b>: Coliseo + Foro Romano + Palatino + Castel Sant'Angelo = GRATIS (1er domingo de mes)</div>
+      <div class="tip-row">🆓 <b>Panteón Roma</b>: Gratuito el domingo de mañana. Resto de días: €5.</div>
+      <div class="tip-row">🆓 <b>NEMO Rooftop Amsterdam</b>: Gratis todos los días hasta las 17:30 hs.</div>
+      <div class="tip-row">🆓 <b>BMW Welt Munich</b>: Siempre gratuito.</div>
+      <div class="tip-row">🆓 <b>Fondaco dei Tedeschi Venecia</b>: Terraza panorámica gratis (reservar online).</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="card-hdr-title">💡 Tips generales</div></div>
+    <div class="card-body">
+      <div class="tip-row">Adaptador europeo tipo F (2 clavijas redondas). Argentina usa tipo I.</div>
+      <div class="tip-row">Tarjeta de crédito: la misma usada en la reserva para el check-in de hoteles.</div>
+      <div class="tip-row">City Tax: se paga en efectivo en la mayoría de los hoteles al momento del check-in.</div>
+      <div class="tip-row">Permiso internacional de conducir: <b>obligatorio</b> para retirar el auto Budget.</div>
+      <div class="tip-row">ZTL Roma/Florencia: zona de tráfico limitado. Multas automáticas para turistas.</div>
+      <div class="tip-row">Venecia: generar QR de acceso en cda.ve.it/en/ (con datos del hotel).</div>
+      <div class="tip-row">Free Tours: todos gratuitos (propina voluntaria). Llegar 15 min antes al punto.</div>
+    </div>
+  </div>
+  `;
+  document.getElementById('infoContent').innerHTML = h;
+}
+
+// ── MODAL ──
+function openModal(type, key) {
+  let data, title, body = '';
+
+  if (type === 'hotel') {
+    data = HOTELS[key];
+    if (!data) return;
+    title = data.title;
+    body += `<div class="modal-section">`;
+    body += `<div class="modal-section-title">Detalles de la reserva</div>`;
+    Object.entries(data.data).forEach(([k, v]) => {
+      body += `<div class="modal-row"><div class="modal-key">${k}</div><div class="modal-val">${v}</div></div>`;
+    });
+    body += `</div>`;
+    if (data.warn) body += `<div class="modal-warn">⚠ ${data.warn}</div>`;
+    body += `<div class="modal-info">📞 Emergencias Levys Tours: +54 9 11 6700 2000</div>`;
+  } else {
+    data = TICKETS[key];
+    if (!data) return;
+    title = data.title;
+
+    if (data.data) {
+      body += `<div class="modal-section">`;
+      body += `<div class="modal-section-title">Detalles</div>`;
+      Object.entries(data.data).forEach(([k, v]) => {
+        body += `<div class="modal-row"><div class="modal-key">${k}</div><div class="modal-val">${v}</div></div>`;
+      });
+      body += `</div>`;
+    }
+
+    if (data.segments) {
+      body += `<div class="modal-section">`;
+      body += `<div class="modal-section-title">Tramos del vuelo</div>`;
+      data.segments.forEach(s => {
+        body += `<div style="background:var(--gray-l);border-radius:var(--rs);padding:8px 10px;margin-bottom:5px">
+          <div style="font-size:11px;font-weight:700;color:var(--orange)">${s.vuelo}</div>
+          <div style="font-size:11px;margin-top:2px"><b>${s.from}</b> → <b>${s.to}</b></div>
+          <div style="font-size:10px;color:#666;margin-top:2px">${s.salida} → ${s.arribo}</div>
+          <div style="font-size:10px;color:#888">${s.terminal}</div>
+        </div>`;
+      });
+      body += `</div>`;
+    }
+
+    if (data.warn) body += `<div class="modal-warn">⚠ ${data.warn}</div>`;
+    if (data.info) body += `<div class="modal-info">ℹ ${data.info}</div>`;
+  }
+
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+function closeModalBtn() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+// ── FAB ──
+window.addEventListener('scroll', () => {
+  document.getElementById('fab').classList.toggle('show', window.scrollY > 300);
+});
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+// ── INIT ──
+currentDay = getTodayIdx();
+initDayNav();
+renderDay();
+</script>
+</body>
+</html>
